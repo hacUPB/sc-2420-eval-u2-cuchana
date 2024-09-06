@@ -145,10 +145,15 @@ Hacer que las figuras geométricas se muevan a través de la pantalla.
 1. **Actualizar Posiciones**:
     - Modifica la función `Update()` para que las posiciones de las figuras cambien ligeramente en cada ciclo del Game Loop.
     - Implementa un desplazamiento lineal en una dirección específica (e.g., hacia la derecha).
-    Primero declare las posiciones iniciales de las figuras que seran a las que le reste -1 para lograr que se muevan a la izquierda
+   
+   Primero declare las posiciones iniciales de las figuras que seran a las que le reste -1 para lograr que se muevan a la izquierda
+
 ![image](https://github.com/user-attachments/assets/07d6a383-53ee-40b7-946e-1066b53d3552)
+
 Luego en Update llame las posiciones en x y les reste 1
+
 ![image](https://github.com/user-attachments/assets/5f707d38-ed5b-489b-bd9f-e60517d1a8f5)
+
 En render reemplaze los numeros por la variables que van a estarse actualizando
 
 
@@ -158,7 +163,29 @@ En render reemplaze los numeros por la variables que van a estarse actualizando
       ![image](https://github.com/user-attachments/assets/2c73bef3-26aa-49ac-9310-4710839e3d96)
       ![image](https://github.com/user-attachments/assets/8de02e8a-a099-4a3c-a6c1-181d64fd0abf)
 
+## Ejercicio 5: Modificación de Tamaño, Orientación y Color
 
+- Objetivo:
+
+Hacer que las figuras cambien de tamaño, orientación, y color durante la ejecución del programa.
+
+- Instrucciones:
+
+1. **Cambio de Tamaño**:
+    - Modifica el código para que el tamaño de las figuras aumente o disminuya con cada ciclo del Game Loop.
+ Para hacer esto declare unas variables para el resto de medidas, como lo hice para la posicion, agregue variables para la escala en Y y el radio (las cuales reemplace en render) y una variable para el cambio de tamaño, la razon por la 
+ que no le sume 1 directamente, si no que cree una variable es porque en update agregue dos momentos, en el que crece hasta cierto tamaño y luego decrece para que no se salga de la pantalla ni se sobrepongan. En update hay dos bucles, de crecimiento y disminucion.
+
+ ![image](https://github.com/user-attachments/assets/aca5ae4b-8d76-4e61-8467-d38ba8bb7296) ![image](https://github.com/user-attachments/assets/72418b8d-a9d1-4a3a-9c0a-009d56a91f7f)
+
+      
+2. **Cambio de Orientación**:
+    - Implementa un giro de las figuras. Por ejemplo, rota un rectángulo o cambia la dirección de una línea.
+      
+3. **Cambio de Color**:
+    - Programa un ciclo de colores para las figuras, haciendo que cambien de color en intervalos regulares.
+4. **Observar Cambios**:
+    - Compila y ejecuta el programa. Observa cómo los cambios afectan la visualización de las figuras y cómo interactúan con el Game Loop.
       
 
 
