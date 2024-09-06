@@ -2,12 +2,13 @@
 ## Nombre completo: Luciana Gutierrez Posada
 ## ID: 000507574
 # Actividad 1: 
+
 ## Ejercicio 1: Reconociendo las Partes del Game Loop
-### Objetivo:
+- Objetivo:
 
 Entender las funciones principales de un Game Loop (`Setup()`, `Update()`, `Render()`) y cómo se integran en la función `main()`.
 
-### Instrucciones:
+ - Instrucciones:
 
 1. **Identificación de Funciones**:
     - Observa el código fuente y localiza las funciones `Setup()`, `Update()`, y `Render()`.
@@ -85,11 +86,11 @@ Entender las funciones principales de un Game Loop (`Setup()`, `Update()`, `Rend
    ![image](https://github.com/user-attachments/assets/411b6715-b3b6-4792-a051-07e542cc0440)
 
 ## Ejercicio 2: Calculando el Tiempo de Ejecución
-### Objetivo:
+- Objetivo:
 
 Calcular el tiempo que transcurre entre cada llamada a las funciones `Update()` y `Render()` para entender la frecuencia de actualización del Game Loop.
 
-### Instrucciones:
+- Instrucciones:
 
 1. **Agregar Cronometrado**:
     - Utiliza la función `SDL_GetTicks()` para obtener el tiempo en milisegundos antes y después de cada llamada a `Update()` y `Render()`.
@@ -97,17 +98,17 @@ Calcular el tiempo que transcurre entre cada llamada a las funciones `Update()` 
       
       Muestra linea de codigo:
       
-      ![image](https://github.com/user-attachments/assets/942a2980-5d36-437b-b028-9b4fe3a01faf)
+    ![image](https://github.com/user-attachments/assets/942a2980-5d36-437b-b028-9b4fe3a01faf)
 
       Consola:
-      ![image](https://github.com/user-attachments/assets/496a8837-de75-4520-a5f1-ef2640103573)
+    ![image](https://github.com/user-attachments/assets/496a8837-de75-4520-a5f1-ef2640103573)
       
 2. **Analizar el Resultado**:
     - Ejecuta el programa durante unos segundos y anota los tiempos que se imprimen.
     - Discute cómo estos tiempos afectan la fluidez del juego y por qué es importante mantener una frecuencia de actualización constante.
 
-   ![image](https://github.com/user-attachments/assets/7c185dbb-ff43-47ba-9d9a-d088121f9e8a)
-Al iniciar el programa los tiempos son entre 3, 0 y 1, tras dejarlo correr un rato suben a 7, 6, 14 y 32
+    ![image](https://github.com/user-attachments/assets/7c185dbb-ff43-47ba-9d9a-d088121f9e8a)
+    Al iniciar el programa los tiempos son entre 3, 0 y 1, tras dejarlo correr un rato suben a 7, 6, 14 y 32
 
 ![image](https://github.com/user-attachments/assets/00a3979e-5dc4-4675-b1c1-a8aec6a3701b)
 
@@ -115,20 +116,49 @@ En la imagen se puede ver como en update se alcanza un pico de 32ms lo cual le q
 
 ## Ejercicio 3: Creación de Figuras Geométricas:
 
-### Objetivo:
+- Objetivo:
 
 Crear figuras geométricas básicas (círculos, líneas, rectángulos) y entender cómo se renderizan en pantalla.
 
-### Instrucciones:
+- Instrucciones:
 
 1. **Dibuja Figuras**:
     - Utiliza las funciones de SDL para dibujar un círculo, una línea y un rectángulo en la pantalla dentro de la función `Render()`.
     - Asegúrate de que las figuras se dibujen en posiciones distintas y visibles.
-    
+![image](https://github.com/user-attachments/assets/5d11f806-a188-4cc0-8364-8c41004be306)
+![image](https://github.com/user-attachments/assets/cd3adece-7815-40ff-9364-1737570e8d52)
+
 2. **Colorear las Figuras**:
     - Modifica el código para que cada figura tenga un color diferente. Usa `SDL_SetRenderDrawColor()` antes de dibujar cada figura.
+    ![image](https://github.com/user-attachments/assets/3e62badb-564a-4c9d-b513-8e02b808655f)
 3. **Guardar y Compilar**:
     - Guarda los cambios y compila el programa. Observa las figuras en la pantalla y asegúrate de que se dibujen correctamente.
+![image](https://github.com/user-attachments/assets/85c4f3c4-9b4e-4ea7-902e-ae9124c78920)
+
+## Ejercicio 4: Movimiento de figuras en pantalla 
+- Objetivo:
+
+Hacer que las figuras geométricas se muevan a través de la pantalla.
+
+- Instrucciones:
+
+1. **Actualizar Posiciones**:
+    - Modifica la función `Update()` para que las posiciones de las figuras cambien ligeramente en cada ciclo del Game Loop.
+    - Implementa un desplazamiento lineal en una dirección específica (e.g., hacia la derecha).
+    Primero declare las posiciones iniciales de las figuras que seran a las que le reste -1 para lograr que se muevan a la izquierda
+![image](https://github.com/user-attachments/assets/07d6a383-53ee-40b7-946e-1066b53d3552)
+Luego en Update llame las posiciones en x y les reste 1
+![image](https://github.com/user-attachments/assets/5f707d38-ed5b-489b-bd9f-e60517d1a8f5)
+En render reemplaze los numeros por la variables que van a estarse actualizando
+
+
+2. **Ejecutar y Observar**:
+    - Ejecuta el programa y observa cómo las figuras se mueven en la pantalla. Anota cualquier problema que ocurra, como si las figuras desaparecen de la pantalla.
+      ![image](https://github.com/user-attachments/assets/a6f6b38a-8cb2-435d-82fd-5920bb778505)
+      Logré que se movieran pero al ser un moviento a la izquierda ilimitado salen de la pantalla y no vuelven a aparecer
+
+
+
 
 
    
