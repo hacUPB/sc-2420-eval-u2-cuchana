@@ -156,7 +156,8 @@ En render reemplaze los numeros por la variables que van a estarse actualizando
     - Ejecuta el programa y observa cómo las figuras se mueven en la pantalla. Anota cualquier problema que ocurra, como si las figuras desaparecen de la pantalla.
       Logré que se movieran pero al ser un moviento a la izquierda ilimitado salen de la pantalla y no vuelven a aparecer, por lo cual arregle el update con condicionales, cuando x=0 deja de moverse
       ![image](https://github.com/user-attachments/assets/2c73bef3-26aa-49ac-9310-4710839e3d96)
-      ![image](https://github.com/user-attachments/assets/cdd62c25-c929-485c-8a42-0296407f1045)
+      ![image](https://github.com/user-attachments/assets/8de02e8a-a099-4a3c-a6c1-181d64fd0abf)
+
 
       
 
