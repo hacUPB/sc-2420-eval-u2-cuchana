@@ -182,6 +182,26 @@ Hacer que las figuras cambien de tamaño, orientación, y color durante la ejecu
 2. **Cambio de Orientación**:
     - Implementa un giro de las figuras. Por ejemplo, rota un rectángulo o cambia la dirección de una línea.
       
+      Primero declare el angulo y la velocidad de rotacion
+      ```c
+      // Ángulo de rotación (en radianes)
+       float rotation_angle = 0.0f;
+      float rotation_speed = 0.05f;
+      ```
+
+
+      Luego con seno y coseno cree una funcion para poder rotar cualquier recta respecto a su centro
+      ```c
+      void rotate_point(int* x, int* y, int cx, int cy, float angle) {
+      int temp_x = *x - cx;
+      int temp_y = *y - cy;
+      *x = temp_x * cos(angle) - temp_y * sin(angle) + cx;
+      *y = temp_x * sin(angle) + temp_y * cos(angle) + cy;
+       }
+
+      ```
+
+      
 3. **Cambio de Color**:
     - Programa un ciclo de colores para las figuras, haciendo que cambien de color en intervalos regulares.
 4. **Observar Cambios**:
