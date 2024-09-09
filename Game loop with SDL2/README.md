@@ -190,22 +190,114 @@ Hacer que las figuras cambien de tamaño, orientación, y color durante la ejecu
       ```
 
 
-      Luego con seno y coseno cree una funcion para poder rotar cualquier recta respecto a su centro
+      Luego con seno y coseno cree una funcion para poder rotar cualquier recta respecto a su centro (chat gpt me la corrigio)
       ```c
-      void rotate_point(int* x, int* y, int cx, int cy, float angle) {
-      int temp_x = *x - cx;
-      int temp_y = *y - cy;
-      *x = temp_x * cos(angle) - temp_y * sin(angle) + cx;
-      *y = temp_x * sin(angle) + temp_y * cos(angle) + cy;
-       }
+      void rotate_point(int* px, int* py, int cx, int cy, float angle) {
+      float radians = angle * M_PI / 180.0;
+      float cos_angle = cos(radians);
+      float sin_angle = sin(radians);
+      int x_new = cos_angle * (*px - cx) - sin_angle * (*py - cy) + cx;
+      int y_new = sin_angle * (*px - cx) + cos_angle * (*py - cy) + cy;
+      *px = x_new;
+      *py = y_new;
+      }
+      ```
+      Agregue una linea en update donde el valor del angulo se suma a si mismo con la velocidad de rotacion, despues cree las funciones que se encargan de rotar y renderizar la linea y el rectangulo relleno, honestamente no entendi bien la parte del rectangulo, chat me ayudo a que estuviera relleno e hizo muchos for pero le pedi que me explicara y desgloso el codigo
+      ```c
+      // Render function to draw the rotated rectangle
+
+      void render_filled_rotated_rectangle(int x, int y, int width, int height, float angle) {
+          int cx = x + width / 2;
+          int cy = y + height / 2;
+      
+          SDL_Point points[4] = {
+              {x, y},
+              {x + width, y},
+              {x + width, y + height},
+              {x, y + height}
+          };
+      
+          for (int i = 0; i < 4; i++) {
+              rotate_point(&points[i].x, &points[i].y, cx, cy, angle);
+          }
+      
+          int min_y = points[0].y;
+          int max_y = points[0].y;
+          for (int i = 1; i < 4; i++) {
+              if (points[i].y < min_y) min_y = points[i].y;
+              if (points[i].y > max_y) max_y = points[i].y;
+          }
+      
+          for (int y = min_y; y <= max_y; y++) {
+              int min_x = points[0].x;
+              int max_x = points[0].x;
+              for (int i = 1; i < 4; i++) {
+                  if (points[i].y == y) {
+                      if (points[i].x < min_x) min_x = points[i].x;
+                      if (points[i].x > max_x) max_x = points[i].x;
+                  }
+                  else {
+                      int prev = (i == 0) ? 3 : i - 1;
+                      if ((points[i].y <= y && points[prev].y >= y) || (points[i].y >= y && points[prev].y <= y)) {
+                          int cross_x = points[i].x + (y - points[i].y) * (points[prev].x - points[i].x) / (points[prev].y - points[i].y);
+                          if (cross_x < min_x) min_x = cross_x;
+                          if (cross_x > max_x) max_x = cross_x;
+                      }
+                  }
+              }
+              SDL_RenderDrawLine(renderer, min_x, y, max_x, y);
+          }
+      }
+      
+      
+      // Render function to draw the rotated line
+      void render_rotated_line(int x1, int y1, int x2, int y2, float angle) {
+          int cx = (x1 + x2) / 2;
+          int cy = (y1 + y2) / 2;
+      
+          rotate_point(&x1, &y1, cx, cy, angle);
+          rotate_point(&x2, &y2, cx, cy, angle);
+      
+          SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+      }
 
       ```
-
-      
 3. **Cambio de Color**:
     - Programa un ciclo de colores para las figuras, haciendo que cambien de color en intervalos regulares.
+      Primero estableci variables con el cambio de color
+      ```c
+      // Variables para el cambio de color
+      int color_step = 0;
+      int color_recta[3] = { 255, 0, 0 };
+      int color_linea [3] = { 0, 255, 0 };
+      int color_circulo [3] = { 0, 0, 255 };
+
+      ```
+      Luego en update un ciclo de cambio de colores
+      ```c
+      // Ciclo de colores
+      color_step = (color_step + 1) % 255;
+      color_recta[0] = (color_recta[0] + 1) % 256;
+      color_recta[1] = (color_recta[1] + 2) % 256;
+      color_recta[2] = (color_recta[2] + 3) % 256;
+      
+      color_linea[0] = (color_linea[0] + 3) % 256;
+      color_linea[1] = (color_linea[1] + 2) % 256;
+      color_linea[2] = (color_linea[2] + 1) % 256;
+      
+      color_circulo[0] = (color_circulo[0] + 2) % 256;
+      color_circulo[1] = (color_circulo[1] + 1) % 256;
+      color_circulo[2] = (color_circulo[2] + 3) % 256;
+      ```
+      Y en render reemplace los valores de SDL_SetRenderColor por los del ciclo de update.
+     
 4. **Observar Cambios**:
     - Compila y ejecuta el programa. Observa cómo los cambios afectan la visualización de las figuras y cómo interactúan con el Game Loop.
+      
+      ![image](https://github.com/user-attachments/assets/d22c90a3-9668-4660-834b-05b524eab75f)
+      
+      El rectangulo sigue raro pero la intencion es lo que cuenta
+
       
 
 
