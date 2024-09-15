@@ -299,7 +299,276 @@ Hacer que las figuras cambien de tamaño, orientación, y color durante la ejecu
       El rectangulo sigue raro pero la intencion es lo que cuenta
 
       
+## Ejercicio 6: Rebote de figuras
+- Objetivo:
 
+Hacer que las figuras geométricas reboten contra las paredes de la pantalla y/o entre ellas.
+
+- Instrucciones:
+
+1. **Implementar Rebote Contra Paredes**:
+    - En la función `Update()`, agrega condiciones que inviertan la dirección de movimiento de las figuras cuando colisionen con los bordes de la pantalla.
+    
+    Creo las variables de velocidad de movimiento
+    ```c
+    // Velocidades de movimiento para las figuras
+    int recta_vel_x = 2;
+    int recta_vel_y = 2;
+    int linea_vel_x = 1;
+    int linea_vel_y = 1;
+    int circulo_vel_x = 3;
+    int circulo_vel_y = 3;
+    ```
+    Luego un bool para las colisiones del rectangulo y otro para las del circulo
+    ```c
+    bool check_collision(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2) {
+    return x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2;
+    }
+    bool check_circle_rect_collision(int cx, int cy, int radius, int rx, int ry, int rw, int rh) {
+    int closest_x = (cx < rx) ? rx : (cx > rx + rw) ? rx + rw : cx;
+    int closest_y = (cy < ry) ? ry : (cy > ry + rh) ? ry + rh : cy;
+    int distance_x = cx - closest_x;
+    int distance_y = cy - closest_y;
+    return (distance_x * distance_x + distance_y * distance_y) < (radius * radius);
+    }
+    ```
+    Todo esto va antes de update(), dentro de la funcion escribi estas lineas, donde revisa si ocurre la colision, y si pasa invierte las direcciones de movimiento de x o y respectivamente
+    ```c
+     // Comprobar colisión del rectángulo con las paredes
+    if (recta_x <= 0 || recta_x + rect_width >= WINDOW_WIDTH) {
+        recta_vel_x *= -1;  // Invertir dirección en el eje X
+    }
+    if (recta_y <= 0 || recta_y + rect_height >= WINDOW_HEIGHT) {
+        recta_vel_y *= -1;  // Invertir dirección en el eje Y
+    }
+
+    // Comprobar colisión del círculo con las paredes
+    if (circulo_x - circle_radius <= 0 || circulo_x + circle_radius >= WINDOW_WIDTH) {
+        circulo_vel_x *= -1;
+    }
+    if (circulo_y - circle_radius <= 0 || circulo_y + circle_radius >= WINDOW_HEIGHT) {
+        circulo_vel_y *= -1;
+    }
+    ```
+
+
+
+2. **Rebote Entre Figuras**:
+    - Implementa la detección de colisiones entre figuras. Si dos figuras colisionan, invierte sus direcciones de movimiento.
+
+    Para hacer esto creamos dentro de update() el primero
+    ```c
+     // Colisión entre rectángulo y círculo
+    if (check_circle_rect_collision(circulo_x, circulo_y, circle_radius, recta_x, recta_y, rect_width, rect_height)) {
+     recta_vel_x *= -1;
+     recta_vel_y *= -1;
+     circulo_vel_x *= -1;
+     circulo_vel_y *= -1;
+    }
+
+    // Colisión entre rectángulo y línea
+    if (check_collision(recta_x, recta_y, rect_width, rect_height, linea_x1, linea_y1, linea_x2 - linea_x1, 1)) {
+     recta_vel_x *= -1;
+     recta_vel_y *= -1;
+     linea_vel_x *= -1;
+     linea_vel_y *= -1;
+    }
+
+    // Colisión entre círculo y línea
+    if (check_collision(circulo_x - circle_radius, circulo_y - circle_radius, circle_radius * 2, circle_radius * 2, linea_x1, linea_y1, linea_x2 - linea_x1, 1)) {
+     circulo_vel_x *= -1;
+     circulo_vel_y *= -1;
+     linea_vel_x *= -1;
+     linea_vel_y *= -1;
+    }
+    ```
+
+3. **Prueba y Ajuste**:
+    - Ejecuta el programa y ajusta las velocidades o direcciones según sea necesario para observar un rebote realista.
+
+
+## Aplicacion de las actividades 1 y 2: Juego inspirado en brick breaker
+
+Me inspire de brick breaker para hacer el mini juego, para lograrlo use de referencia el codigo fuente de la actividad uno y los ejercicios de ambas actividades, me apoye en chat gpt para los conceptos que no entendia y temas de estructura.
+
+Primero hay que entender lo que debemos hacer, los componentes de este juego son una pelota que se mueve por toda la pantalla y rebota por los laterales de la ventana y la barrita, la barrita que es la cual el jugador va a controlar con la cual va a evitar que la pelota toque el piso (si eso pasa se acaba el juego), los ladrillos van a ser quienes den puntaje, se destruiran cuando la pelota les pegue, para el puntaje hare un contador que aumente de 10 en 10 por cada ladrillo destruido, esto lo mostrare en la consola. 
+
+1. Definir las estructuras/game objects de la pelota, barra y ladrillo 
+
+```c
+struct Ball {
+    int x, y; // Posición de la bola
+    int radius; // Tamaño de la bola, es un cuadrado entonces usamos una sola variable
+    int dx, dy; // Dirección en los ejes X y Y
+};
+
+// Definimos la estructura de la paleta
+struct Paddle {
+    int x, y; // Posición de la paleta
+    int width, height; // Tamaño de la paleta, rectangulo
+    int speed; // Velocidad de movimiento
+};
+
+// Definimos los ladrillos
+struct Brick {
+    int x, y; // Posición del ladrillo
+    int width, height; // Tamaño del ladrillo, rectangulo
+    bool destroyed; // Indicador si el ladrillo fue destruido
+};
+
+```
+Todas las variables que definimos acá sol las que usaremos a lo largo del codigo.
+
+2. Inicializacion del juego
+
+Al ya haber definido las variables debemos de darle un valor, para las operaciones y funciones que usaremos mas adelante
+```c 
+// Inicializamos la bola
+struct Ball ball = {400, 300, 10, 5, -5}; // Posición inicial en (400, 300) y velocidad (5, -5)
+
+// Inicializamos la paleta
+struct Paddle paddle = {350, 500, 100, 20, 10}; // Posición inicial y tamaño de la barrita
+
+// Inicializamos una matriz de ladrillos
+struct Brick bricks[5][10]; // 5 filas, 10 columnas
+for (int i = 0; i < 5; i++) {
+    for (int j = 0; j < 10; j++) {
+        bricks[i][j].x = j * 80;
+        bricks[i][j].y = i * 40;
+        bricks[i][j].width = 80;
+        bricks[i][j].height = 40;
+        bricks[i][j].destroyed = false; // Aqui no ha colisionado entonces le damos el valor de false
+    }
+}
+
+```
+3. Movimiento de la bola
+
+La bola estara moviendose constantemente, debemos de tener colisiones controladas con los limites de la pantalla y la barrita, si toca la parte inferior de la pantalla el juego termina.
+```c
+// Función de actualización del movimiento de la bola, creamos un update especifico
+void update_ball(bool* game_is_running) {
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+
+    // Colisión con los bordes de la pantalla
+    if (ball.x <= 0 || ball.x >= WINDOW_WIDTH - ball.radius * 2) {
+        ball.dx *= -1; // Cambia la dirección en el eje X
+    }
+    if (ball.y <= 0) {
+        ball.dy *= -1; // Cambia la dirección en el eje Y (parte superior)
+    }
+    if (ball.y >= WINDOW_HEIGHT - ball.radius * 2) {
+    printf("¡La bola cayo! Fin del juego.\n");
+    *game_is_running = false; // Termina el juego si la bola cae 
+    }
+}
+```
+4. Movimiento de la barrita
+Esta es controlada por el jugador al usar la flecha de izquierda y derecha, creamos una funcion con un int de direccion (flecha) y limitamos el movimiento para que no salga de la pantalla
+```c
+// Movimiento de la paleta usando teclas
+void move_paddle(int direction) {
+    if (direction == SDLK_LEFT && paddle.x > 0) {
+        paddle.x -= paddle.speed;
+    }
+    if (direction == SDLK_RIGHT && paddle.x < WINDOW_WIDTH - paddle.width) {
+        paddle.x += paddle.speed;
+    }
+}
+```
+5. Colisiones entre la bola y la barrita
+La bola debe de invertir en Y su direccion al tocar la barra, por lo cual creamos una funcion que detecte la colision
+
+```c
+// Detectar colisión entre la bola y la paleta
+void check_ball_paddle_collision() {
+    if (ball.x + ball.radius >= paddle.x &&
+        ball.x <= paddle.x + paddle.width &&
+        ball.y + ball.radius >= paddle.y &&
+        ball.y <= paddle.y + paddle.height) {
+        ball.dy *= -1; // Invierte la dirección en el eje Y
+    }
+}
+```
+6. Colision de la bola y los ladrillos
+Esta funcion tiene dos acciones, la destruccion del ladrillo y el cambio de direccion de la bola, para detectar esta colision usamos el radio de la bola
+Chat me ayudo con esta parte y uso el operador logico && qie evalua varias condiciones al mismo tiempo y se asegura de que todas sean verdaderas
+```c
+// Colisión con los ladrillos
+void check_ball_brick_collision() {
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 10; j++) {
+            struct Brick *brick = &bricks[i][j];
+            if (!brick->destroyed &&
+                ball.x + ball.radius >= brick->x &&// Verifica colision con el lado izquierdo
+                ball.x <= brick->x + brick->width &&//Verifica si el borde de la bola esta antes o en el lado derecho del ladrillo
+                ball.y + ball.radius >= brick->y &&//Verifica si colisiono con la parte superior del ladrillo
+                ball.y <= brick->y + brick->height) //Verifica si el borde de la bola esta antes o en la parte inferior 
+                {
+                brick->destroyed = true; // Destruye el ladrillo
+                ball.dy *= -1; // Cambia la dirección de la bola
+            }
+        }
+    }
+}
+```
+El for recorre todos los ladrillos y verifica si la pelota colisiono con uno que no haya sido destruido, si hay colision la variable bool destroyed se marca true
+
+7. Render del juego
+Dibuja la bola, barrita y todos los ladrillos sin destruir.
+```c
+void render_game() {
+    render_circle(ball.x, ball.y, ball.radius);
+
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+    SDL_Rect paddle_rect = {paddle.x, paddle.y, paddle.width, paddle.height};
+    SDL_RenderFillRect(renderer, &paddle_rect);
+
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 10; j++) {
+            if (!bricks[i][j].destroyed) {
+                SDL_Rect brick_rect = {bricks[i][j].x, bricks[i][j].y, bricks[i][j].width, bricks[i][j].height};
+                SDL_RenderFillRect(renderer, &brick_rect);
+            }
+        }
+    }
+}
+
+```
+8. Entrada del usuario
+Ahora el juego espera la entrada del usuario, sea para salir o mover la barrita, usamos SDL_KEYDOWN (Evento cuando se presiona una tecla,detecta la tecla y realiza su funcion dada) y SDL_PollEvent (Funcion que maneja eventos en un ciclo de eventos, como las entradas)
+```c
+void process_input() {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) { //evento al cerrar la ventana de juego
+            game_is_running = false;
+        }
+        if (event.type == SDL_KEYDOWN) {
+            move_paddle(event.key.keysym.sym);
+        }
+    }
+}
+```
+9. Bucle principal del juego
+Primero procesamos la entrada, se actualiza la posicion de la bola, revisamos colisiones, se actualiza el render y esperamos 16ms 
+```c
+void game_loop() {
+    while (game_is_running) {
+        process_input();
+        update_ball();
+        check_ball_paddle_collision();
+        check_ball_brick_collision();
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        render_game();
+        SDL_RenderPresent(renderer);
+        SDL_Delay(16);
+    }
+}
+```
 
 
 

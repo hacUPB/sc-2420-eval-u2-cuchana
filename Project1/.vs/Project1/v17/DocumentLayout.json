@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\lucia\\source\\repos\\Project1\\",
+  "WorkspaceRootPath": "C:\\Sistemas comp\\sc-2420-eval-u2-cuchana\\Project1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{94749B40-5C45-4FED-B463-240AE4C4CECE}|Project1\\Project1.vcxproj|C:\\Users\\lucia\\source\\repos\\Project1\\Project1\\Main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{94749B40-5C45-4FED-B463-240AE4C4CECE}|Project1\\Project1.vcxproj|C:\\Sistemas comp\\sc-2420-eval-u2-cuchana\\Project1\\Project1\\Main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{94749B40-5C45-4FED-B463-240AE4C4CECE}|Project1\\Project1.vcxproj|solutionrelative:Project1\\Main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{94749B40-5C45-4FED-B463-240AE4C4CECE}|Project1\\Project1.vcxproj|C:\\Users\\lucia\\source\\repos\\Project1\\Project1\\constants.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{94749B40-5C45-4FED-B463-240AE4C4CECE}|Project1\\Project1.vcxproj|C:\\Sistemas comp\\sc-2420-eval-u2-cuchana\\Project1\\Project1\\constants.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{94749B40-5C45-4FED-B463-240AE4C4CECE}|Project1\\Project1.vcxproj|solutionrelative:Project1\\constants.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -24,9 +24,9 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "constants.h",
-              "DocumentMoniker": "C:\\Users\\lucia\\source\\repos\\Project1\\Project1\\constants.h",
+              "DocumentMoniker": "C:\\Sistemas comp\\sc-2420-eval-u2-cuchana\\Project1\\Project1\\constants.h",
               "RelativeDocumentMoniker": "Project1\\constants.h",
-              "ToolTip": "C:\\Users\\lucia\\source\\repos\\Project1\\Project1\\constants.h",
+              "ToolTip": "C:\\Sistemas comp\\sc-2420-eval-u2-cuchana\\Project1\\Project1\\constants.h",
               "RelativeToolTip": "Project1\\constants.h",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
@@ -36,11 +36,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Main.c",
-              "DocumentMoniker": "C:\\Users\\lucia\\source\\repos\\Project1\\Project1\\Main.c",
+              "DocumentMoniker": "C:\\Sistemas comp\\sc-2420-eval-u2-cuchana\\Project1\\Project1\\Main.c",
               "RelativeDocumentMoniker": "Project1\\Main.c",
-              "ToolTip": "C:\\Users\\lucia\\source\\repos\\Project1\\Project1\\Main.c",
+              "ToolTip": "C:\\Sistemas comp\\sc-2420-eval-u2-cuchana\\Project1\\Project1\\Main.c",
               "RelativeToolTip": "Project1\\Main.c",
-              "ViewState": "AQIAAG8AAAAAAAAAAAAAAH0AAAAhAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAH0AAAAhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-08-30T15:17:44.427Z",
               "EditorCaption": ""
